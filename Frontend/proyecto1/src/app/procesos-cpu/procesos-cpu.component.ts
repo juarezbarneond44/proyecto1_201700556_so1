@@ -22,13 +22,9 @@ public detenidos:number=0;
   public valorProceso:Proceso1={"pid":"","nombre":"","usuario":"","estado":"","ram":"","hijo":""}
   public valorHijo:Hijo1={"pid":"","nombre":"","usuario":"","estado":""}
   PedirDatos()
-  {
-  
-      // eliminaremos el primer dato del arreglo 
-     // this.DatosRam.shift();
-    
+  { 
     this.BackendService.GetProceso().subscribe((res)=>{
-// se crea un analizador para leer los datos del proceso S
+// se crea un analizador para leer los datos del proceso 
 let aux:String=new String(res);
  
     if(aux instanceof String){
@@ -48,15 +44,7 @@ let aux:String=new String(res);
             break;
           case 1: // es el estado del proceso padre
           if(dato=="\""||dato===" "||dato==="\t"||dato==="\n"){}
-          else if(dato=="}"){estado=0;
-          // aqui se va a subir el json en mi arreglo
-              // se crea un random para la ram xD
-          // this.valorProceso.ram=(Math.floor(Math.random() * 10) + 1)/100;
-
-
-          //this.DatosProcesos.push(this.valorProceso)
-         // this.valorProceso={"pid":"","nombre":"","usuario":"","estado":"","ram":"","hijo":""}
-          }
+          else if(dato=="}"){estado=0;}
           else if(dato===":"){estado=2;}
           else{palabra=palabra+dato;}
             break;
@@ -78,6 +66,7 @@ let aux:String=new String(res);
 
             }
             else if(dato==="["){
+            
              this.valorProceso.ram=(Math.floor(Math.random() * 10) + 1)/100;
 
 
@@ -85,17 +74,14 @@ let aux:String=new String(res);
             this.valorProceso={"pid":"","nombre":"","usuario":"","estado":"","ram":"","hijo":""}
             resultado="";
             palabra="";
-            estado=3;
-    
-              // se va al hijo esta en pendiente 
-            }
+            estado=3;}
             else{
               if(dato=="\""||dato===" "||dato==="\t"||dato==="\n"){break;}
               resultado=resultado+dato;}
             break;
             case 3: // estado del hijo
               if(dato==="{"){
-               // console.log(padre)
+      
                resultado="";
                palabra="";
                
@@ -109,7 +95,6 @@ let aux:String=new String(res);
                 padre=""
                 estado=1;
               }
-             // if(dato==="]"){estado=1;padre="";}
               break;
  
               case 4:
@@ -149,12 +134,6 @@ let aux:String=new String(res);
             break;
         }
 
-
-
-
-
-
-
       }
 
     }
@@ -173,7 +152,6 @@ this.DatosProcesos.forEach(element =>
  
 });
 this.totalProc=this.DatosProcesos.length;
-     //console.log(  this.DatosProcesos) 
    })
       
   }
