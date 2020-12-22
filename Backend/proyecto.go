@@ -23,21 +23,6 @@ type Cpu struct {
 	Nucleo1 string `json:"nucleo1"`
 	Libre1  string `json:"libre1"`
 }
-type Proceso struct {
-	Procesos InfoCpu `json:"procesos"`
-}
-type InfoCpu struct {
-	Pid    int         `json:"pid"`
-	Nombre string      `json:"nombre"`
-	Estado int         `json:"estado"`
-	Hijo   InfoCpuHijo `json:"hijo"`
-}
-type InfoCpuHijo struct {
-	Pid    int    `json:"pid"`
-	Nombre string `json:"nombre"`
-	Estado int    `json:"estado"`
-}
-
 //funcion que realizara los datos de la ram
 func homeRAM(w http.ResponseWriter, req *http.Request) {
 	enableCors(&w) // habilitamos cors
@@ -46,7 +31,21 @@ func homeRAM(w http.ResponseWriter, req *http.Request) {
 	println("******** Cargar Datos RAM******")
 	println("201700556")
 
-	// funcion para obtener datos de la ram
+	// funcion para obtener datos de la ram	 
+/*
+// de esta manera se obtienen los valores del archivo memo 
+b, err := ioutil.ReadFile("/proc/memo_201700556") // obtenemos el archivo
+	if err != nil {
+		fmt.Print(err)
+	}
+	str := string(b) // convert content to a 'string'
+
+	//fmt.Println(str) // print the content as a 'string'
+
+	json.NewEncoder(w).Encode(str)
+*/
+	
+	// se utilizo mem.virtualmemory()   ya que los valores del archivo memo no mostraron valores exactos
 	v, _ := mem.VirtualMemory()
 	var Total = v.Total / (1024 * 1024)                  //valor total de ram en mb
 	var Porcentaje = v.UsedPercent                       // porcentaje de utiliacion
@@ -62,10 +61,10 @@ func homeRAM(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// valores en consola
+	// valores de la ram en consola
 	fmt.Print(string(b))
 
-	// enviamos en formato json los datos de la ram
+	// enviamos en formato json los datos de la ram mediante peticion http
 	json.NewEncoder(w).Encode(datos)
 
 }
@@ -76,10 +75,11 @@ func homeCPU(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("Datos Del CPU")
 
 	percent, _ := cpu.Percent(time.Second, true)
-	var nucleo1 = percent[0]
-	var libre1 = 100 - nucleo1
-
-	fmt.Printf("nucleo 1: %v\n", nucleo1)
+	var nucleo1 = percent[0] // obtenemos el uso del procesador
+	var libre1 = 100 - nucleo1 // obtenemos el espacio libre del procesador
+	// si se tiene mas de 1 nucleo se puede poner de la siguiente manera 
+	//percent[1],percent[2],percent[n]   
+	fmt.Printf("nucleo 1: %v\n", nucleo1) 
 	fmt.Printf("libre 1: %v,\n", libre1)
 	dato := Cpu{
 		Nucleo1: fmt.Sprintf("%v", nucleo1),
@@ -91,6 +91,7 @@ func homeCPU(w http.ResponseWriter, r *http.Request) {
 	}
 	// valores en consola
 	fmt.Print(string(b))
+	// enviamos en formato json los datos del cpu mediante peticion http
 	json.NewEncoder(w).Encode(dato)
 }
 func datosCPU(w http.ResponseWriter, r *http.Request) {
@@ -113,11 +114,11 @@ func main() {
 	router.HandleFunc("/Ram", homeRAM).Methods("GET")
 	router.HandleFunc("/DatoCpu", datosCPU).Methods("GET")
 	router.HandleFunc("/Cpu", homeCPU).Methods("GET")
-	// levantamos el servidor en el puerto 4444 xD
+	// levantamos el servidor en el puerto 4444 
 	log.Fatal(http.ListenAndServe(":4444", router))
 }
 
-// esta funcion sirve para poder mandar peticiones a angular
+// esta funcion sirve para poder mandar peticiones a angular ya que habilita los cors
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
