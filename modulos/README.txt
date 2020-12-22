@@ -23,5 +23,7 @@ sudo rmmod cpu_carnet.KO
 ----------------------------------------
 vara visualiar el contenido del archivo cpu_carnet, se debe redirigir a la carpeta /proc y en dicha carpeta escribir el comando
 cat cpu_carnet
+----------------------------
+el archivo makefile se copia tal cual
 
 
