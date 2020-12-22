@@ -1,1 +1,0 @@
-cmd_/home/juan/Escritorio/Proyecto1/modulos/cpu_201700556.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/juan/Escritorio/Proyecto1/modulos/cpu_201700556.ko /home/juan/Escritorio/Proyecto1/modulos/cpu_201700556.o /home/juan/Escritorio/Proyecto1/modulos/cpu_201700556.mod.o;  true
