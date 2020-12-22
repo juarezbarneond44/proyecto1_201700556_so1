@@ -23,5 +23,5 @@ sudo rmmod memo_carnet.KO
 ----------------------------------------
 vara visualiar el contenido del archivo memo_carnet, se debe redirigir a la carpeta /proc y en dicha carpeta escribir el comando
 cat memo_carnet
-
-
+----------------------------
+el archivo makefile se copia tal cual
