@@ -1,7 +1,6 @@
-	se instalaron las librerias:
+se instalaron las librerias:
   "github.com/gorilla/mux"
-	"github.com/shirou/gopsutil/cpu"
-	"github.com/shirou/gopsutil/mem"
-  
+"github.com/shirou/gopsutil/cpu"
+"github.com/shirou/gopsutil/mem"
  ------------------------------------
  
